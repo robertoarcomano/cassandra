@@ -170,5 +170,5 @@ Cassandra.multiprocess_insert(
     key_space=key_space,
     total_records=num_records,
     n_processes=100,     
-    concurrency=256    
+    concurrency=512    
 )
