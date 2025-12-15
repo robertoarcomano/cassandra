@@ -1,0 +1,13 @@
+services:
+  cassandra:
+    image: cassandra:5.0.6
+    container_name: cassandra
+    ports:
+      - "9042:9042"
+      - "7000:7000"
+    volumes:
+      - ./cassandra_data:/var/lib/cassandra
+    environment:
+      - CASSANDRA_CLUSTER_NAME=MyCluster
+      - MAX_HEAP_SIZE=10G
+    restart: unless-stopped
