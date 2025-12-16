@@ -164,8 +164,8 @@ num_records = 1000000
 cassandra = Cassandra(key_space=key_space)
 cassandra.delete_all()
 
-cassandra.speed_multi_batch_insert(num_records)
-cassandra.single_speed_concurrent_insert(num_records)
+# cassandra.speed_multi_batch_insert(num_records)
+# cassandra.single_speed_concurrent_insert(num_records)
 Cassandra.multiprocess_insert(
     key_space=key_space,
     total_records=num_records,
