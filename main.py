@@ -7,6 +7,11 @@ from functools import wraps
 from cassandra.concurrent import execute_concurrent
 from cassandra.policies import TokenAwarePolicy, DCAwareRoundRobinPolicy
 import multiprocessing as mp
+import csv
+from itertools import islice
+import random
+import string
+import sys
 
 
 class Cassandra:
@@ -159,16 +164,32 @@ class Cassandra:
             raise_on_first_error=False
         )
 
+    @staticmethod
+    def generate_users_csv(num_records, filename='users.csv'):
+        with open(filename, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(['id', 'name', 'email'])  # Header
+            
+            for i in range(1,num_records+1):
+                # Genera dati come nel tuo yield originale (adatta se custom)
+                name = f"user_{i}"
+                email = f"{name.lower()}@example.com"
+                uid = str(uuid.uuid4())
+                writer.writerow([uid, name, email])  # Lista flat per tuple-like
+
+if len(sys.argv) == 1:
+    sys.exit(f"Sintax {sys.argv[0]}")
 key_space = 'cassandra_data'
-num_records = 1000000
+num_records = int(sys.argv[1])
 cassandra = Cassandra(key_space=key_space)
 cassandra.delete_all()
+cassandra.generate_users_csv(num_records)
 
 # cassandra.speed_multi_batch_insert(num_records)
 # cassandra.single_speed_concurrent_insert(num_records)
-Cassandra.multiprocess_insert(
-    key_space=key_space,
-    total_records=num_records,
-    n_processes=100,     
-    concurrency=512    
-)
+# Cassandra.multiprocess_insert(
+#     key_space=key_space,
+#     total_records=num_records,
+#     n_processes=10,     
+#     concurrency=10    
+# )
