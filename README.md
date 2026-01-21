@@ -1,21 +1,21 @@
 # Cassandra
+```
+(.venv) berto@laptop:~/src/cassandra$ make
+=== Instructions for Cassandra using docker-compose ===
 
-## Install
-```
-docker-compose up -d
-```
+Available commands:
+  make env        - Create .venv and install dependencies (requirements.txt)
+  make up         - Download and run Cassandra containers
+  make stats      - Check Cassandra cluster
+  make populate n - Create Keyspace cassandra_data, create table users and insert n rows
+  make cqlsh      - connect to the cluster
+  make down       - remove Cassandra containers
 
-## Configure python
-```
-python -m venv .venv
-source .venv/bin/activate
-pip install cassandra-driver
-```
-
-# Test it
-```
-(.venv) berto@laptop:~/src/cassandra$ python main.py 
-multi_batch_insert: 2248.72 records/s
-concurrent_insert: 10431.82 records/s
-multiprocess_concurrent_insert: 103679.34 records/s
+Typical workflow:
+  1. make env
+  2. make up
+  3. make stats
+  4. make populate n
+  5. make cqlsh
+  7. make down
 ```
