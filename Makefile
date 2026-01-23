@@ -1,3 +1,4 @@
+parameter := $(word 2, $(MAKECMDGOALS))
 default: 
 	@echo "=== Instructions for Cassandra using docker-compose ==="
 	@echo ""
@@ -29,11 +30,19 @@ stats:
 	docker-compose stats
 
 populate:
-	. .venv/bin/activate && python main.py $(filter-out $@,$(MAKECMDGOALS)) && ./bulk_insert.sh $(filter-out $@,$(MAKECMDGOALS))
+ifeq ($(strip $(parameter)),)
+	$(error Usage: make populate <num_records>)
+endif
+	. .venv/bin/activate && python main.py $(parameter) && ./bulk_insert.sh
 		
 cqlsh:
 	docker-compose exec -it cassandra-1 cqlsh -k cassandra_data
 
+test:
+	@echo $(parameter)
+
 down:
 	docker-compose down
 
+%:
+	@:
